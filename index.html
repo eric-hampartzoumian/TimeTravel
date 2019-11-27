@@ -53,48 +53,5 @@ layout: base
   </div>
 </footer>
 -->
-<script src="{{ site.baseurl }}/static/vendor/leaflet/dist/leaflet.js" type="text/javascript" charset="utf-8"></script>
 
-<script type="text/javascript">
-  $('#map').height($(window).height() - 200);
-
-  $('.smooth-scroll').click(function(e) {
-    e.preventDefault();
-    //calculate destination place
-    var dest = 0;
-    if ($(this.hash).offset().top > $(document).height() - $(window).height()) {
-        dest = $(document).height() - $(window).height();
-    } else {
-        dest = $(this.hash).offset().top;
-    }
-    //go to destination
-    $('html,body').animate({
-        scrollTop: dest
-    }, 1000, 'swing');
-  });
-
-  var tileUrl = '{{ site.tileUrl }}';
-  L.Icon.Default.imagePath = '{{ site.baseurl }}/static/vendor/leaflet/dist/images/';
-  var map = L.map('map', {
-    center: [20, 11],
-    zoom: 2,
-    scrollWheelZoom: false
-  });
-  defaultTileLayer = new L.TileLayer(tileUrl, {
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'});
-  map.attributionControl.setPrefix("");
-  map.addLayer(defaultTileLayer);
-
-  var marker, coords;
-  {% for city in site.cities %}
-    {% unless city.hidden %}
-      coords = {{ city.coordinates | jsonify }};
-      if (coords) {
-        marker = L.marker([coords[1], coords[0]]).addTo(map);
-        marker.bindPopup('<h2><a href="{{ city.url|replace_first:"/","" }}">{{ city.cityname }}</a></h2>');
-      }
-    {% endunless %}
-  {% endfor %}
-
-</script>
 
